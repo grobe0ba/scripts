@@ -1,4 +1,4 @@
 scripts
 =======
 
-Collection of some script I find useful
+Collection of some scripts I find useful
