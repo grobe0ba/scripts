@@ -6,7 +6,7 @@ fi
 
 show_help() {
 	cat << EOF
-Usage: $0 -dsvixau [-b boot device] [-c cdrom image] [-f floppy image] [-n NIC model] [-m memory] [-h hard drive]
+Usage: $0 -dsvixau [-b boot device] [-c cdrom image] [-f floppy image] [-n NIC model] [-m memory] [-h hard drive] [-z qemu system]
 	d: Do not run in screen
 	s: Use VNC for display
 	v: Disable VIRTIO
@@ -22,7 +22,7 @@ SCR="screen -dmS qemu"
 #QDISP="-display vnc=127.0.0.1:0"
 QDISP="-display sdl"
 BOOT=c
-MEM=512
+MEM=1345
 
 #Old Networking
 #-net tap,ifname=qemu,script=no,downscript=no,id=net0
@@ -30,8 +30,9 @@ ETH0="-netdev tap,ifname=qemu,script=no,downscript=no,id=net0 -device virtio-net
 ETH1="-netdev tap,ifname=qemu1,script=no,downscript=no,id=net1 -device virtio-net-pci,netdev=net1"
 HDDEV=virtio
 MON=
+QEMU_SYSTEM="qemu-system-x86_64 -enable-kvm"
 
-while getopts "dsn:b:c:f:xm:vh:qia" opt; do
+while getopts "dsn:b:c:f:xm:vh:qiaz:" opt; do
 	case "$opt" in
 		q)
 			show_help >&2
@@ -79,6 +80,9 @@ while getopts "dsn:b:c:f:xm:vh:qia" opt; do
 		u)
 			USBTABLET="-device usb-tablet"
 			;;
+		z)
+			QEMU_SYSTEM=$OPTARG
+			;;
 		'?')
 			show_help >&2
 			exit 1
@@ -86,4 +90,4 @@ while getopts "dsn:b:c:f:xm:vh:qia" opt; do
 	esac
 done
 
-$SCR qemu-system-x86_64 -enable-kvm -m $MEM -drive media=disk,if=$HDDEV,index=0,file=$HDA $FLOPPY $CDROM $MON -boot $BOOT $QDISP -net nic$NMODEL $ETH0 -net nic$NMODEL $ETH1 -vga std -device piix4-usb-uhci -device virtio-balloon $USBTABLET
+nice -n19 $SCR $QEMU_SYSTEM -m $MEM -drive media=disk,if=$HDDEV,index=0,file=$HDA $FLOPPY $CDROM $MON -boot $BOOT $QDISP -net nic$NMODEL $ETH0 -net nic$NMODEL $ETH1 -vga std -device piix4-usb-uhci -device virtio-balloon $USBTABLET
