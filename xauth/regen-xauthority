@@ -1,0 +1,10 @@
+#!/bin/bash
+
+PWD=`pwd`
+cd $HOME
+key=`perl -e 'srand; printf int(rand(100000000000000000))'`
+key=$key$key
+rm -rf ~/.Xauth*
+touch ~/.Xauthority
+xauth add ${HOSTNAME}/unix:0 . $key
+cd $PWD
