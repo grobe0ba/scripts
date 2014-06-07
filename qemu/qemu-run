@@ -37,7 +37,7 @@ MON=
 QEMU_SYSTEM="qemu-system-x86_64 -enable-kvm"
 set_qdisp()
 {
-	case "$@" in
+	case "$1" in
 		spice)
 			QDISP="-vga qxl -spice port=5900,addr=127.0.0.1,disable-ticketing -device virtio-serial-pci -device virtserialport,chardev=spicechannel0,name=com.    redhat.spice.0 -chardev spicevmc,id=spicechannel0,name=vdagent"
 			;;
@@ -61,7 +61,7 @@ while getopts "ds:n:b:c:f:xm:vh:qiaz:" opt; do
 			exit
 			;;
 		s)
-			set_qdisp($OPTARG)
+			set_qdisp $OPTARG
 			;;
 		d)
 			SCR=""
