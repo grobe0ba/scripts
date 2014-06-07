@@ -24,7 +24,7 @@ SCR=
 SCR="screen -dmS qemu"
 #QDISP="-display vnc=127.0.0.1:0"
 #QDISP="-display sdl -vga std"
-QDISP="-vga qxl -spice port=5900,addr=127.0.0.1,disable-ticketing -device virtio-serial-pci -device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0 -chardev spicevmc,id=spicechannel0,name=vdagent --monitor=stdio"
+QDISP="-vga qxl -spice port=5900,addr=127.0.0.1,disable-ticketing -device virtio-serial-pci -device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0 -chardev spicevmc,id=spicechannel0,name=vdagent --monitor stdio"
 BOOT=c
 MEM=1345
 RUNSPICEC=1
@@ -40,7 +40,7 @@ set_qdisp()
 {
 	case "$1" in
 		spice)
-			QDISP="-vga qxl -spice port=5900,addr=127.0.0.1,disable-ticketing -device virtio-serial-pci -device virtserialport,chardev=spicechannel0,name=com.    redhat.spice.0 -chardev spicevmc,id=spicechannel0,name=vdagent --monitor=stdio"
+			QDISP="-vga qxl -spice port=5900,addr=127.0.0.1,disable-ticketing -device virtio-serial-pci -device virtserialport,chardev=spicechannel0,name=com.    redhat.spice.0 -chardev spicevmc,id=spicechannel0,name=vdagent --monitor stdio"
 			;;
 		sdl)
 			QDISP="-display sdl -vga std"
