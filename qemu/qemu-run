@@ -24,9 +24,10 @@ SCR=
 SCR="screen -dmS qemu"
 #QDISP="-display vnc=127.0.0.1:0"
 #QDISP="-display sdl -vga std"
-QDISP="-vga qxl -spice port=5900,addr=127.0.0.1,disable-ticketing -device virtio-serial-pci -device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0 -chardev spicevmc,id=spicechannel0,name=vdagent"
+QDISP="-vga qxl -spice port=5900,addr=127.0.0.1,disable-ticketing -device virtio-serial-pci -device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0 -chardev spicevmc,id=spicechannel0,name=vdagent --monitor=stdio"
 BOOT=c
 MEM=1345
+RUNSPICEC=1
 
 #Old Networking
 #-net tap,ifname=qemu,script=no,downscript=no,id=net0
@@ -39,13 +40,15 @@ set_qdisp()
 {
 	case "$1" in
 		spice)
-			QDISP="-vga qxl -spice port=5900,addr=127.0.0.1,disable-ticketing -device virtio-serial-pci -device virtserialport,chardev=spicechannel0,name=com.    redhat.spice.0 -chardev spicevmc,id=spicechannel0,name=vdagent"
+			QDISP="-vga qxl -spice port=5900,addr=127.0.0.1,disable-ticketing -device virtio-serial-pci -device virtserialport,chardev=spicechannel0,name=com.    redhat.spice.0 -chardev spicevmc,id=spicechannel0,name=vdagent --monitor=stdio"
 			;;
 		sdl)
 			QDISP="-display sdl -vga std"
+			RUNSPICEC=0
 			;;
 		vnc)
 			QDISP="-display vnc=127.0.0.1:0"
+			RUNSPICEC=0
 			;;
 		'?')
 			show_help >&2;
@@ -113,5 +116,7 @@ while getopts "ds:n:b:c:f:xm:vh:qiaz:" opt; do
 done
 
 nice -n19 $SCR $QEMU_SYSTEM -m $MEM -drive media=disk,if=$HDDEV,index=0,file=$HDA $FLOPPY $CDROM $MON -boot $BOOT $QDISP -net nic$NMODEL $ETH0 -net nic$NMODEL $ETH1 -device piix4-usb-uhci -device virtio-balloon $USBTABLET
-sleep 5
-spicec -h 127.0.0.1 -p 5900 >/dev/null 2>&1 &
+if [ $RUNSPICEC == 1 ]; then
+	sleep 5
+	spicec -h 127.0.0.1 -p 5900 >/dev/null 2>&1 &
+fi
