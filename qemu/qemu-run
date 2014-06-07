@@ -113,3 +113,5 @@ while getopts "ds:n:b:c:f:xm:vh:qiaz:" opt; do
 done
 
 nice -n19 $SCR $QEMU_SYSTEM -m $MEM -drive media=disk,if=$HDDEV,index=0,file=$HDA $FLOPPY $CDROM $MON -boot $BOOT $QDISP -net nic$NMODEL $ETH0 -net nic$NMODEL $ETH1 -device piix4-usb-uhci -device virtio-balloon $USBTABLET
+sleep 5
+spicec -h 127.0.0.1 -p 5900 >/dev/null 2>&1 &
