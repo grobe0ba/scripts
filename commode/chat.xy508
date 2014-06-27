@@ -1,6 +1,0 @@
-POST / HTTP/1.0
-User-Agent: bash
-Host: localhost
-Content-Type: text/xml
-Content-Length:      197 chat.h4Xxx
-
