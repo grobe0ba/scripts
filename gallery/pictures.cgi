@@ -5,7 +5,7 @@ use File::Find ();
 use CGI qw/:standard -debug/;
 
 # Set the variable $File::Find::dont_use_nlink if you're using AFS,
-# since AFS cheats.
+# since AFS cheats. 
 
 # for the convenience of &wanted calls, including -eval statements:
 use vars qw/*name *dir *prune/;
