@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/local/bin/bash
 
 #All credit for this script goes to nullogic@sdf.org
 
@@ -40,8 +40,7 @@ echo $URL
 #echo $NUM
 #echo $PAGE
 lynx --source $URL |\
-sed -e 's/
-//g' -e 's/<br\/>/ /g' -e 's/&quot;/"/g' |\
+sed -e 's/\n//g' -e 's/<br\/>/ /g' -e 's/&quot;/"/g' |\
 awk "/$NUM\.\<\/a>/"'{
 	while( index($0, "definition")==0 ) {
 			getline;
@@ -56,4 +55,4 @@ awk "/$NUM\.\<\/a>/"'{
 			print $0;
 			getline;
 		}
-}' |stripHTML.sed
+}' |./stripHTML.sed
