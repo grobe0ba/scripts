@@ -5,7 +5,7 @@ declare -a RDIRS
 function gdir
 {
 	export RDEPTH=$((RDEPTH+1))
-	RDIRS[$(RDEPTH)]=$(pwd)
+	RDIRS[$RDEPTH]=$(pwd)
 	export RDIRS
 	cd "$1"
 }
