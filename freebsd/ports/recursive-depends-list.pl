@@ -4,7 +4,7 @@ use strict;
 use Data::Dumper;
 
 my $depth=0;
-my $prefix="";
+my $prefix="   ";
 my %portindex=();
 
 sub getdep
@@ -15,7 +15,7 @@ sub getdep
 
 	foreach(@DEPS)
 	{
-		$prefix=~tr/[ |]/ /c;
+		$prefix=~s/[\- |]/ /g;
 		$prefix="$prefix|--";
 		print "$prefix$_\n";
 		getdep($_);
@@ -38,5 +38,6 @@ while(defined(my $LINE=<$INDEX_FILE>))
 
 if($ARGV[0])
 {
+	print "|--$ARGV[0]\n";
 	getdep($ARGV[0]);
 }
