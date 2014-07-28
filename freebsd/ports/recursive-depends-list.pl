@@ -4,7 +4,7 @@ use strict;
 use Data::Dumper;
 
 my $depth=0;
-my $prefix="   ";
+my $prefix="|--";
 my %portindex=();
 
 sub getdep
@@ -17,11 +17,16 @@ sub getdep
 	{
 		$prefix=~s/[\- |]/ /g;
 		$prefix="$prefix|--";
-		print "$prefix$_\n";
-		getdep($_);
-		$prefix=""
+		if ($_ ne "" )
+		{
+			print "$prefix$_\n";
+			getdep($_);
+		}
+		$prefix=substr $prefix, 0, -3;
 	}
 }
+
+sub uniq { my %seen; grep !$seen{$_}++, @_ }
 
 
 open(my $INDEX_FILE, "< /usr/ports/INDEX-10") or die "Could not open INDEX file: $!\n";
@@ -31,7 +36,13 @@ while(defined(my $LINE=<$INDEX_FILE>))
 	chomp $LINE;
 	my @PORT = split(/\|/, $LINE);
 	my $KEY=$PORT[0];
-	my $VALUE="$PORT[7] $PORT[8]";
+	my $VALUESTRING="$PORT[7] $PORT[8]";
+
+	my @VALUEARRAY=split(/ /, $VALUESTRING);
+
+	@VALUEARRAY=uniq(@VALUEARRAY);
+
+	my $VALUE=join(" ", @VALUEARRAY);
 
 	$portindex{"$KEY"}=$VALUE;
 }
