@@ -1,0 +1,11 @@
+#!/usr/local/bin/bash
+FILE=$(basename -a "$2")
+DIR=$(dirname "$2" | sed -e 's/\.\///' | sed -e "s#$MOVIEDIR/##")
+
+if $(echo "$FILE" | grep -qE '\....$');
+then
+	if $(echo "$FILE" | grep -qvE 'playlist');
+	then
+		echo "http://192.168.1.10:1236/Movies/$DIR/$FILE" >> $1
+	fi
+fi

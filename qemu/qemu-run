@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/local/bin/bash
 HDA=/home/grobe0ba/qemu/sda
 if [[ ! -a $HDA ]]; then
 	qemu-img create -f qcow2 $HDA 100G
@@ -31,11 +31,11 @@ RUNSPICEC=1
 
 #Old Networking
 #-net tap,ifname=qemu,script=no,downscript=no,id=net0
-ETH0="-netdev tap,ifname=qemu,script=no,downscript=no,id=net0 -device virtio-net-pci,netdev=net0"
-ETH1="-netdev tap,ifname=qemu1,script=no,downscript=no,id=net1 -device virtio-net-pci,netdev=net1"
+ETH0="-net tap"
+ETH1="-net tap"
 HDDEV=virtio
 MON=
-QEMU_SYSTEM="qemu-system-x86_64 -enable-kvm"
+QEMU_SYSTEM="qemu-system-x86_64"
 set_qdisp()
 {
 	case "$1" in
@@ -43,7 +43,7 @@ set_qdisp()
 			QDISP="-vga qxl -spice port=5900,addr=127.0.0.1,disable-ticketing -device virtio-serial-pci -device virtserialport,chardev=spicechannel0,name=com.    redhat.spice.0 -chardev spicevmc,id=spicechannel0,name=vdagent --monitor stdio"
 			;;
 		sdl)
-			QDISP="-display sdl -vga std"
+			QDISP="-sdl -vga std"
 			RUNSPICEC=0
 			;;
 		vnc)
