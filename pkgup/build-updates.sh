@@ -2,6 +2,8 @@
 
 HOSTNAMES="valhalla asgard"
 
+REMOVE_PACKAGES="sysutils/vagrant"
+
 JAIL="build10"
 PORTS="default"
 
@@ -16,6 +18,16 @@ do
 done
 
 cat *.pkglist > pkglist
+
+TMP=$(mktemp /tmp/pkgup.XXXX)
+
+for PKG in $REMOVE_PACKAGES;
+do
+	grep -v $PKG pkglist > $TMP
+	cp $TMP pkglist
+done
+
+rm $TMP
 
 sudo poudriere ports -u -p $PORTS
 sudo poudriere bulk -j $JAIL -p $PORTS -f pkglist
