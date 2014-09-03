@@ -10,14 +10,15 @@ rm *.pkglist pkglist
 
 declare -a HOSTNAME
 
-for HOST in $(seq 0 $((${#HOSTNAMES[@]} - 1)));
+for i in $(seq 0 $((${#HOSTNAMES[@]} - 1)));
 do
-	ssh $HOST pkg query -a "%o" > $HOSTNAME.pkglist
+	ssh $HOSTNAME[$i] pkg query -a "%o" > $HOSTNAME.pkglist
 
 done
 
 cat *.pkglist > pkglist
 
+sudo poudriere ports -u -p $PORTS
 sudo poudriere bulk -j $JAIL -p $PORTS -f pkglist
 
 rm *.pkglist
