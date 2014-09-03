@@ -12,7 +12,7 @@ declare -a HOSTNAME
 
 for i in $(seq 0 $((${#HOSTNAMES[@]} - 1)));
 do
-	ssh $HOSTNAME[$i] pkg query -a "%o" > $HOSTNAME.pkglist
+	ssh ${HOSTNAME[$i]} pkg query -a "%o" > $HOSTNAME.pkglist
 
 done
 
