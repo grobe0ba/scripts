@@ -13,7 +13,8 @@ declare -a HOSTNAME
 for HOST in $(seq 0 $((${#HOSTNAMES[@]} - 1)));
 do
 	ssh $HOST pkg query -a "%o" > $HOSTNAME.pkglist
-end
+
+done
 
 cat *.pkglist > pkglist
 
