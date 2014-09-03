@@ -1,7 +1,6 @@
 #!/usr/local/bin/bash
 
-HOSTNAMES[0]="valhalla"
-HOSTNAMES[1]="asgard"
+HOSTNAMES="valhalla asgard"
 
 JAIL="build10"
 PORTS="default"
@@ -10,9 +9,9 @@ rm *.pkglist pkglist
 
 declare -a HOSTNAME
 
-for i in $(seq 0 $((${#HOSTNAMES[@]} - 1)));
+for HOST in $HOSTNAMES;
 do
-	ssh ${HOSTNAME[$i]} pkg query -a "%o" > $HOSTNAME.pkglist
+	ssh $HOST pkg query -a "%o" > $HOSTNAME.pkglist
 
 done
 
