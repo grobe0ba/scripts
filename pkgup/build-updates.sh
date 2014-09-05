@@ -7,7 +7,7 @@ REMOVE_PACKAGES="sysutils/vagrant"
 JAIL="build10"
 PORTS="default"
 
-rm *.pkglist pkglist
+rm -f *.pkglist pkglist
 
 declare -a HOSTNAME
 
@@ -29,7 +29,7 @@ done
 
 rm $TMP
 
-sudo poudriere ports -u -p $PORTS
+sudo poudriere ports -u -p $PORTS -m svn+https
 sudo poudriere bulk -j $JAIL -p $PORTS -f pkglist
 
 rm *.pkglist
