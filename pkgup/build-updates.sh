@@ -4,7 +4,7 @@ HOSTNAMES="valhalla asgard"
 
 REMOVE_PACKAGES="sysutils/vagrant"
 
-JAIL="build10"
+JAIL="build11"
 PORTS="default"
 
 rm -f *.pkglist pkglist
