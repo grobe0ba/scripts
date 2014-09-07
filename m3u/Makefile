@@ -1,0 +1,13 @@
+all: MKINDEX
+
+clean:
+	rm *b64 MKINDEX
+
+MKINDEX: MKINDEX.m4 TOINDEX MKM3U
+	openssl base64 < TOINDEX > TOINDEX.b64
+	openssl base64 < MKM3U > MKM3U.b64
+	m4 MKINDEX.m4 > MKINDEX
+
+MKM3U: MKM3U.m4 MK3HELP
+	openssl base64 < MK3HELP > MK3HELP.b64
+	m4 MKM3U.m4 > MKM3U
