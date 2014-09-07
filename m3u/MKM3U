@@ -1,0 +1,26 @@
+#!/usr/local/bin/bash
+
+if [[ "$1" == "." ]]; then
+	exit 0
+fi
+
+HELPER=$(mktemp /tmp/MKM3U.XXXXX)
+
+openssl base64 -d >$HELPER << EOF
+IyEvdXNyL2xvY2FsL2Jpbi9iYXNoCkZJTEU9JChiYXNlbmFtZSAtYSAiJDIiKQpE
+SVI9JChkaXJuYW1lICIkMiIgfCBzZWQgLWUgJ3MvXC5cLy8vJyB8IHNlZCAtZSAi
+cyMkTU9WSUVESVIvIyMiKQoKaWYgJChlY2hvICIkRklMRSIgfCBncmVwIC1xRSAn
+XC4uLi4kJyk7CnRoZW4KCWlmICQoZWNobyAiJEZJTEUiIHwgZ3JlcCAtcXZFICdw
+bGF5bGlzdCcpOwoJdGhlbgoJCWVjaG8gImh0dHA6Ly8xOTIuMTY4LjEuMTA6MTIz
+Ni9Nb3ZpZXMvJERJUi8kRklMRSIgPj4gJDEKCWZpCmZpCg==
+
+EOF
+
+PLNAME=$(echo $1 | sed -e "s#$MOVIEDIR/##" | sed -e "s#/#_#g")
+PLAYLIST=$MOVIEDIR/$PLNAME.m3u
+
+
+echo "#EXTM3U" > $PLAYLIST
+find $1 -depth -exec /usr/local/bin/bash $HELPER $PLAYLIST "{}" \;
+find "$1" -type d -depth 1 -exec /usr/local/bin/bash $0 "{}" \;
+rm "$HELPER"
