@@ -9,8 +9,6 @@ PORTS="default"
 
 rm -f *.pkglist pkglist
 
-declare -a HOSTNAME
-
 for HOST in $HOSTNAMES;
 do
 	ssh $HOST pkg query -a "%o" > $HOSTNAME.pkglist
