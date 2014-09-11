@@ -68,6 +68,19 @@ options 	KDB_TRACE		# Print a stack trace for a panic.
 # Bus support.
 device		pci
 
+# ATA controllers
+device          ahci                    # AHCI-compatible SATA controllers
+device          ata                     # Legacy ATA/SATA controllers
+options         ATA_STATIC_ID           # Static device numbering
+device          mvs                     # Marvell 88SX50XX/88SX60XX/88SX70XX/SoC SATA
+device          siis                    # SiliconImage SiI3124/SiI3132/SiI3531 SATA
+
+device          scbus                   # SCSI bus (required for ATA/SCSI)
+device          ch                      # SCSI media changers
+device          da                      # Direct Access (disks)
+device          pass                    # Passthrough device (direct ATA/SCSI access)
+device          ctl                     # CAM Target Layer
+
 # Serial (COM) ports
 device		uart			# Generic UART driver
 
