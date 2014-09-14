@@ -1,0 +1,84 @@
+#!/usr/local/bin/bash
+NUID=$(cut -d':' -f3 /etc/passwd | grep ^555 | sort -sn | tail -n1)
+NUID=$((NUID+1))
+if [ -n "$NUID" ]; then
+	NUID=5551
+fi
+
+function get_unam
+{
+	echo -en "Enter your new username: "
+	read UNAM
+	UNAM=$(printf "%s" "$UNAM" | tr -cd "[[:alnum:]]")
+}
+
+function assign_port
+{
+	SPORT=$((($NUID*$NUID)>>10))
+	EPORT=$((SPORT+10))
+	echo "Your port range is from $SPORT to $EPORT"
+}
+
+function assign_ip6
+{
+	echo "Your IPv6 IP (with all ports assigned to you) is: 2001:470:885f:ffff::$NUID"
+	ifconfig sis0 inet6 alias 2001:470:885f:ffff::$NUID prefixlen 64
+}
+
+function change_password
+{
+	echo -en "You will set your password\n!!! DO NOT SET AN EMPTY PASSWORD !!!\nIf you set an empty password, you will be unable to login\n"
+	passwd $UNAM
+}
+
+function do_chsh
+{
+	echo -en "You will now be able to set your GECOS information.\nWhen you are done, it will prompt for your password\nPress any key to continue..."
+	read
+	su $UNAM -c chsh
+}
+
+function finale
+{
+	echo -en "You have now completed the creation of your user account.\nYou may login at any time.\nPress any key to continue...\n"
+	read
+}
+
+
+function welcome
+{
+	cat << EOF
+Welcome to Pulpie Community Services!
+This script will help you make yourself a new user,
+as well as assign you your port range and IPv6 address.
+EOF
+}
+
+function check_settings
+{
+	echo -en "Your new username will be $UNAM\nIs this correct (y/n) "
+	read TF
+	case "$TF" in
+		y)
+			#/usr/sbin/pw useradd -u $NUID -g shell-users -s /usr/local/bin/bash -m -n $UNAM
+			/usr/sbin/useradd -m -g shell -u $NUID -s /usr/local/bin/bash -f MAR3106 $UNAM
+			#/usr/sbin/pw usermod $UNAM -p 31-MAR-06
+			change_password
+			do_chsh
+			#assign_port
+			assign_ip6
+			finale
+			;;
+		n)
+			get_unam
+			check_settings
+			;;
+		'?')
+			check_settings
+			;;
+	esac
+}
+
+welcome
+get_unam
+check_settings
