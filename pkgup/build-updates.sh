@@ -25,6 +25,12 @@ do
 	cp $TMP pkglist
 done
 
+while [[ -n "$1" ]];
+do
+	echo $1 >> pkglist
+	shift
+done
+
 rm $TMP
 
 sudo poudriere ports -u -p $PORTS -m svn+https
