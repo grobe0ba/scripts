@@ -1,7 +1,7 @@
 #!/usr/local/bin/bash
 NUID=$(cut -d':' -f3 /etc/passwd | grep ^555 | sort -sn | tail -n1)
 NUID=$((NUID+1))
-if [ -n "$NUID" ]; then
+if [ -z "$NUID" ]; then
 	NUID=5551
 fi
 
