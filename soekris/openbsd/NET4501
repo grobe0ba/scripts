@@ -1,4 +1,4 @@
-#	$OpenBSD: GENERIC,v 1.785 2014/09/08 01:47:05 guenther Exp $
+#	$OpenBSD: GENERIC,v 1.768 2014/02/23 09:36:52 kettenis Exp $
 #
 # For further information on compiling OpenBSD kernels, see the config(8)
 # man page.
@@ -17,10 +17,11 @@ option		USER_PCICONF	# user-space PCI configuration
 
 option		KVM86		# Kernel Virtual 8086 emulation
 option		USER_LDT	# user-settable LDT; see i386_set_ldt(2)
-option		APERTURE	# in-kernel aperture driver for XFree86
 option		MTRR		# CPU memory range attributes control
 
 option		COMPAT_LINUX	# binary compatibility with Linux
+
+option		PROCFS		# /proc
 
 config		bsd	swap generic
 
@@ -28,13 +29,14 @@ mainbus0 at root
 
 cpu0	at mainbus?
 bios0	at mainbus0
-acpi0	at bios?
 pcibios0 at bios0 flags 0x0000	# use 0x30 for a total verbose
+
+option		PCIVERBOSE
+option		EISAVERBOSE
+option		USBVERBOSE
 
 isa0	at mainbus0
 pci*	at mainbus0
-
-pchb*	at pci?			# PCI-Host bridges
 
 elansc*	at pci?			# AMD Elan SC520 System Controller
 gpio*	at elansc?
@@ -42,19 +44,16 @@ gpio*	at elansc?
 npx0	at isa? port 0xf0 irq 13	# math coprocessor
 isadma0	at isa?
 
+pckbc0		at isa? flags 0x00	# PC keyboard controller
+pckbd*		at pckbc?	# PC keyboard
+wskbd*		at pckbd? mux 1
+
 pcppi0		at isa?
 
 com0	at isa? port 0x3f8 irq 4	# standard PC serial ports
 com1	at isa? port 0x2f8 irq 3
 
 scsibus* at scsi?
-uk*	at scsibus?		# unknown SCSI
-
-mpath0	at root
-emc*	at scsibus?
-hds*	at scsibus?
-rdac*	at scsibus?
-sym*	at scsibus?
 
 wdc0	at isa? port 0x1f0 irq 14 flags 0x00
 wdc1	at isa? port 0x170 irq 15 flags 0x00
@@ -63,8 +62,24 @@ wdc1	at isa? port 0x170 irq 15 flags 0x00
 wd*	at wdc? flags 0x0000
 
 sis*	at pci?				# SiS 900/7016 ethernet
-nsphy*	at mii?
+
+nsphy*	at mii?				# NS and compatible PHYs
+nsphyter*	at mii?			# NS and compatible PHYs
+
+spkr0	at pcppi?		# PC speaker
+
+# crypto support
+hifn*	at pci?			# Hi/fn 7751 crypto card
+lofn*	at pci?			# Hi/fn 6500 crypto card
+nofn*	at pci?			# Hi/fn 7814/7851/7854 crypto card
+ubsec*	at pci?			# Bluesteel Networks 5xxx crypto card
+safe*	at pci?			# SafeNet SafeXcel 1141/1741
+glxsb*	at pci?			# AMD Geode LX series processor security block
 
 pseudo-device	pctr		1
 pseudo-device	nvram		1
 pseudo-device	hotplug		1	# devices hot plugging
+
+# mouse & keyboard multiplexor pseudo-devices
+pseudo-device	wsmux		2
+pseudo-device	crypto		1
