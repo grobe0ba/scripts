@@ -29,7 +29,6 @@ mainbus0 at root
 
 cpu0	at mainbus?
 bios0	at mainbus0
-#mpbios0	at bios0
 pcibios0 at bios0 flags 0x0000	# use 0x30 for a total verbose
 
 option		PCIVERBOSE
@@ -61,5 +60,5 @@ sis*	at pci?				# SiS 900/7016 ethernet
 nsphy*	at mii?				# NS and compatible PHYs
 nsphyter*	at mii?			# NS and compatible PHYs
 
-pseudo-device	pctr		1
+#pseudo-device	pctr		1
 pseudo-device	nvram		1
