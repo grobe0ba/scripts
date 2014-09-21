@@ -10,7 +10,7 @@
 # device.
 
 machine		i386
-include		"../../../conf/NET4501.inc"
+include		"../../../conf/GENERIC"
 maxusers	80			# estimated number of users
 
 option		USER_PCICONF	# user-space PCI configuration
