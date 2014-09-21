@@ -29,6 +29,7 @@ mainbus0 at root
 
 cpu0	at mainbus?
 bios0	at mainbus0
+mpbios0	at bios0
 pcibios0 at bios0 flags 0x0000	# use 0x30 for a total verbose
 
 option		PCIVERBOSE
