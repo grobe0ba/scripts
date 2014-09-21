@@ -29,7 +29,7 @@ mainbus0 at root
 
 cpu0	at mainbus?
 bios0	at mainbus0
-mpbios0	at bios0
+#mpbios0	at bios0
 pcibios0 at bios0 flags 0x0000	# use 0x30 for a total verbose
 
 option		PCIVERBOSE
@@ -44,12 +44,6 @@ gpio*	at elansc?
 
 npx0	at isa? port 0xf0 irq 13	# math coprocessor
 isadma0	at isa?
-
-pckbc0		at isa? flags 0x00	# PC keyboard controller
-pckbd*		at pckbc?	# PC keyboard
-wskbd*		at pckbd? mux 1
-
-pcppi0		at isa?
 
 com0	at isa? port 0x3f8 irq 4	# standard PC serial ports
 com1	at isa? port 0x2f8 irq 3
@@ -67,20 +61,5 @@ sis*	at pci?				# SiS 900/7016 ethernet
 nsphy*	at mii?				# NS and compatible PHYs
 nsphyter*	at mii?			# NS and compatible PHYs
 
-spkr0	at pcppi?		# PC speaker
-
-# crypto support
-hifn*	at pci?			# Hi/fn 7751 crypto card
-lofn*	at pci?			# Hi/fn 6500 crypto card
-nofn*	at pci?			# Hi/fn 7814/7851/7854 crypto card
-ubsec*	at pci?			# Bluesteel Networks 5xxx crypto card
-safe*	at pci?			# SafeNet SafeXcel 1141/1741
-glxsb*	at pci?			# AMD Geode LX series processor security block
-
 pseudo-device	pctr		1
 pseudo-device	nvram		1
-pseudo-device	hotplug		1	# devices hot plugging
-
-# mouse & keyboard multiplexor pseudo-devices
-pseudo-device	wsmux		2
-pseudo-device	crypto		1
