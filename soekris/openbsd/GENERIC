@@ -1,4 +1,4 @@
-#	$OpenBSD: GENERIC,v 1.207 2014/02/22 07:20:39 jsg Exp $
+#	$OpenBSD: GENERIC,v 1.211 2014/08/18 14:35:37 tedu Exp $
 #
 #	Machine-independent option; used by all architectures for their
 #	GENERIC kernel
@@ -17,7 +17,7 @@ option		KMEMSTATS	# collect malloc(9) statistics
 option		PTRACE		# ptrace(2) system call
 
 #option		KVA_GUARDPAGES	# slow virtual address recycling (+ guarding)
-#option		POOL_DEBUG	# pool corruption detection
+option		POOL_DEBUG	# pool corruption detection
 #option		VFSLCKDEBUG	# VFS locking checks
 
 option		CRYPTO		# Cryptographic framework
@@ -37,9 +37,13 @@ option		FFS2		# UFS2
 option		FFS_SOFTUPDATES	# Soft updates
 option		UFS_DIRHASH	# hash large directories
 option		QUOTA		# UFS quotas
+option		EXT2FS		# Second Extended Filesystem
 option		MFS		# memory file system
 option		NFSCLIENT	# Network File System client
 option		NFSSERVER	# Network File System server
+option		CD9660		# ISO 9660 + Rock Ridge file system
+option		UDF		# UDF (DVD) file system
+option		MSDOSFS		# MS-DOS file system
 option		FIFO		# FIFOs; RECOMMENDED
 option		TMPFS		# efficient memory file system
 option		FUSE		# FUSE
@@ -51,7 +55,6 @@ option		TCP_SIGNATURE	# TCP MD5 Signatures, for BGP routing sessions
 #option		TCP_FACK	# Forward Acknowledgements for TCP
 
 option		INET		# IP + ICMP + TCP + UDP
-option		ALTQ		# ALTQ base
 option		INET6		# IPv6 (needs INET)
 option		IPSEC		# IPsec
 #option		KEY		# PF_KEY (implied by IPSEC)
