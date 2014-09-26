@@ -10,5 +10,5 @@ MOUNTS=$( zfs list | sed -e 's/  */ /g' | cut -d' ' -f5 | grep -v none |grep -v 
 
 for x in $MOUNTS;
 do
-	echo sudo rm $x/.zfs/snapshot/$1
+	sudo rm $x/.zfs/snapshot/$1
 done
