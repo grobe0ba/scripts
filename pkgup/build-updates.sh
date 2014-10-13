@@ -1,8 +1,8 @@
 #!/usr/local/bin/bash
 
-HOSTNAMES="valhalla asgard"
+HOSTNAMES="valhalla asgard folkvangr"
 
-REMOVE_PACKAGES="sysutils/vagrant"
+REMOVE_PACKAGES=""
 
 JAIL="build11"
 PORTS="default"
