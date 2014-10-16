@@ -1,11 +1,11 @@
 #!/usr/bin/perl
 
 use strict;
-use Data::Dumper;
+use Digest::SHA qw(sha256_hex);
 
 my $depth=0;
-my $prefix="$ARGV[0]->";
-$prefix =~ s/-[a-zA-Z0-9._,]*//;
+my $prefix=sha256_hex($ARGV[0]);
+$prefix="$prefix [label='$ARGV[0]']->";
 my %portindex=();
 my $out;
 
@@ -18,21 +18,15 @@ sub getdep
 
 	foreach(@DEPS)
 	{
-		$prefix=~s/->/ /g;
 		$prefix="$prefix->";
 		if ($_ ne "" )
 		{
-		    my $lout = "$_";
-		    $lout =~ s/-[a-zA-Z0-9._,]*$//;
-		    $lout =~ s/ //g;
-		    $lout =~ s/-//g;
-			print $out "$prefix$lout\n";
-			$prefix="$lout->";
+		    my $lout = sha256_hex($_);
+			print $out "$prefix$lout [label='$_']\n";
+			$prefix="$lout [label='$_']->";
 			getdep($_);
 		}
-		#$prefix=substr $prefix, 0, -3;
 		($prefix,undef)=split(/->/, $prefix);
-		#$prefix="$ARGV[0]->";
 	}
     $depth-=1;
 }
