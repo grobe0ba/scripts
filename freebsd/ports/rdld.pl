@@ -5,7 +5,7 @@ use Digest::SHA qw(sha256_hex);
 
 my $depth=0;
 my $prefix=sha256_hex($ARGV[0]);
-$prefix="$prefix [label='$ARGV[0]']->";
+$prefix=~s/[0-9]//g;
 my %portindex=();
 my $out;
 
@@ -22,8 +22,10 @@ sub getdep
 		if ($_ ne "" )
 		{
 		    my $lout = sha256_hex($_);
-			print $out "$prefix$lout [label='$_']\n";
-			$prefix="$lout [label='$_']->";
+		    $lout=~s/[0-9]//g;
+			print $out "$prefix$lout\n";
+		    print $out "$lout [label=\"$_\"];\n";
+			$prefix="$prefix$lout";
 			getdep($_);
 		}
 		($prefix,undef)=split(/->/, $prefix);
@@ -56,6 +58,7 @@ if($ARGV[0] && $ARGV[1])
 {
     open($out, "> $ARGV[1]") or die "Could not open output file: $!\n";
     print $out "digraph A {\n";
+    print $out "$prefix [label=\"$ARGV[0]\"];\n";
     getdep($ARGV[0]);
     print $out "}\n";
 }
