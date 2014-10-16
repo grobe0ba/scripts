@@ -18,15 +18,18 @@ sub getdep
 
 	foreach(@DEPS)
 	{
-		$prefix="$prefix->";
-		if ($_ ne "" )
+		if ($_ eq "" )
 		{
+			print $out "$prefix\n";
+		}
+		else
+		{
+		    $prefix="$prefix->";
 		    my $lout = sha256_hex($_);
-		    $lout=~s/[0-9]//g;
-			print $out "$prefix$lout\n";
-		    print $out "$lout [label=\"$_\"];\n";
-			$prefix="$prefix$lout";
-			getdep($_);
+		    $lout =~s/[0-9]//g;
+		    $prefix="$prefix$lout";
+		    print $out "$lout [constraint=true,label=\"$_\"];\n";
+		    getdep($_);
 		}
 		($prefix,undef)=split(/->/, $prefix);
 	}
