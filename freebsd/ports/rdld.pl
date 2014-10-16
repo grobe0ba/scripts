@@ -59,7 +59,7 @@ while(defined(my $LINE=<$INDEX_FILE>))
 
 if($ARGV[0] && $ARGV[1])
 {
-    open($out, "> $ARGV[1]") or die "Could not open output file: $!\n";
+    open($out, "| tred | dot > $ARGV[1]") or die "Could not open output file: $!\n";
     print $out "digraph A {\n";
     print $out "$prefix [label=\"$ARGV[0]\"];\n";
     getdep($ARGV[0]);
@@ -67,10 +67,9 @@ if($ARGV[0] && $ARGV[1])
 }
 else
 {
-    print "Usage: recursive-depends-list-dot.pl [port] [output file]\n";
+    print "Usage: recursive-depends-list-dot.pl [port] [output.svg]\n";
     print "port should be in the form port-version (e.g., subversion-1.8.10_3)\n";
     print "You can find this by moving to the port directory and running:\n";
     print "\tmake describe|cut -d'|' -f1\n";
-    print "After this script has run, generate the graph using dot(1)\n";
-    print "e.g.\tdot -Tsvg -o graph.svg rdld_outfile\n";
+    print "This script requires dot and tred from graphviz to be available.\n";
 }
