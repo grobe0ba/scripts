@@ -23,4 +23,4 @@ echo "<TABLE WIDTH='75%' BORDER=1>" >> $MOVIEDIR/index.html
 find $MOVIEDIR -name "*m3u" -exec /usr/local/bin/bash $TOINDEX "{}" \;
 echo "</TABLE></BODY></HTML>" >> $MOVIEDIR/index.html
 
-rm $MKM3U $TONIDEX
+rm $MKM3U $TOINDEX
