@@ -1,6 +1,6 @@
 #!/usr/local/bin/bash
 
-HOSTNAMES="valhalla asgard folkvangr"
+HOSTNAMES="valhalla asgard"
 
 REMOVE_PACKAGES=""
 
