@@ -17,7 +17,7 @@ sub wanted;
 
 my $cgi = CGI->new;
 print $cgi->header;
-print << EOF
+print <<EOF
 paste(base.html)
 EOF
 if($cgi->param("dir"))
