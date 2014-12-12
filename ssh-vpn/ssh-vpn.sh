@@ -67,7 +67,7 @@ setup_remote_interfaces
 
 while true;
 do
-    if ! kill -1 $PID;
+    if ! kill -s 0 $PID;
     then
 	destroy_local_interfaces
 	destroy_remote_interfaces
