@@ -67,7 +67,7 @@ start_ssh
 setup_local_interfaces
 setup_remote_interfaces
 
-while 1;
+while true;
 do
     if ! kill -1 $PID;
     then
