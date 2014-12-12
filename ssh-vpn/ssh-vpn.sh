@@ -77,5 +77,6 @@ do
 	setup_local_interfaces
 	setup_remote_interfaces
     fi
+    sleep 5;
 done
 
