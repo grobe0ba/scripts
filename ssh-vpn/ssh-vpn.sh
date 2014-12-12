@@ -14,12 +14,10 @@ CIDR=
 SYS="$(uname -o)"
 RSYS="$(ssh $REMOTEHOST uname -o)"
 
-PID=""
-
 start_ssh()
 {
     ssh -NCTf -w $TUNDEV:$TUNDEV root@$REMOTEHOST
-    PID=$!
+    export PID=$!
 }
 
 setup_local_interfaces()
