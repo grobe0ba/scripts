@@ -11,7 +11,7 @@ LOCALIP=
 REMOTEIP=
 CIDR=
 
-SYS="$(uname -0)"
+SYS="$(uname -o)"
 RSYS="$(ssh $REMOTEHOST uname -o)"
 
 PID=""
