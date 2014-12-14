@@ -16,7 +16,7 @@ RSYS="$(ssh $REMOTEHOST uname -o)"
 
 start_ssh()
 {
-    ssh -NCT -w $TUNDEV:$TUNDEV root@$REMOTEHOST
+    ssh -NCTvvv -E /root/log -w $TUNDEV:$TUNDEV root@$REMOTEHOST
 }
 
 setup_local_interfaces()
@@ -59,19 +59,26 @@ destroy_remote_interfaces()
     fi
 }
 
+if [ "$1" == "" ];
+then
+    echo "Invalid options." >&2
+    exit 255
+fi
 
-case "$1" in
-    start)
-	start_ssh;
-	;;
-    setup)
-	setup_local_interfaces;
-	setup_remote_interfaces;
-	;;
-    stop)
-	destroy_local_interfaces;
-	destroy_remote_interfaces;
-	;;
-    '?')
-	exit 255;
-esac
+while getopts "rsk" opt; do
+    case "$opt" in
+	r)
+	    start_ssh
+	    ;;
+    
+	s)
+	    setup_local_interfaces
+	    setup_remote_interfaces
+	    ;;
+    
+	k)
+	    destroy_local_interfaces
+	    destroy_remote_interfaces
+	    ;;
+    esac
+done
