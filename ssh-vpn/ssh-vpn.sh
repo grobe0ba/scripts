@@ -16,7 +16,7 @@ RSYS="$(ssh $REMOTEHOST uname -o)"
 
 start_ssh()
 {
-    screen -dmS vpn-$REMOTEHOST-tun$TUNDEV ssh -NCTf -w $TUNDEV:$TUNDEV root@$REMOTEHOST
+    ssh -NCT -w $TUNDEV:$TUNDEV root@$REMOTEHOST
 }
 
 setup_local_interfaces()
@@ -47,7 +47,7 @@ destroy_local_interfaces()
 {
     if [ "$SYS" == "FreeBSD" ];
     then
-	ssh root@$REMOTEHOST ifconfig tun$TUNDEV destroy
+	ifconfig tun$TUNDEV destroy
     fi
 }
 
@@ -60,20 +60,18 @@ destroy_remote_interfaces()
 }
 
 
-start_ssh
-setup_local_interfaces
-setup_remote_interfaces
-
-while true;
-do
-    if ! $(screen -ls | grep -q "vpn-$REMOTEHOST-tun$TUNDEV");
-    then
-	destroy_local_interfaces
-	destroy_remote_interfaces
-	start_ssh
-	setup_local_interfaces
-	setup_remote_interfaces
-    fi
-    sleep 5;
-done
-
+case "$1" in
+    start)
+	start_ssh;
+	;;
+    setup)
+	setup_local_interfaces;
+	setup_remote_interfaces;
+	;;
+    stop)
+	destroy_local_interfaces;
+	destroy_remote_interfaces;
+	;;
+    '?')
+	exit 255;
+esac
