@@ -16,7 +16,10 @@ RSYS="$(ssh $REMOTEHOST uname -o)"
 
 start_ssh()
 {
-    ssh -NCTvvv -E /root/log -w $TUNDEV:$TUNDEV root@$REMOTEHOST
+    ssh -MNCTf -S /root/control-$REMOTEHOST -w $TUNDEV:$TUNDEV root@$REMOTEHOST
+    PID=$(ssh -S /root/control-$REMOTEHOST -O check $REMOTEHOST 2>&1 |cut -d'=' -f2|tr -cd "[:alnum:]")
+    echo $PID > /root/$REMOTEHOST.pid
+    sleep 2
 }
 
 setup_local_interfaces()
@@ -65,20 +68,9 @@ then
     exit 255
 fi
 
-while getopts "rsk" opt; do
-    case "$opt" in
-	r)
-	    start_ssh
-	    ;;
-    
-	s)
-	    setup_local_interfaces
-	    setup_remote_interfaces
-	    ;;
-    
-	k)
-	    destroy_local_interfaces
-	    destroy_remote_interfaces
-	    ;;
-    esac
-done
+destroy_local_interfaces
+destroy_remote_interfaces
+start_ssh
+setup_local_interfaces
+setup_remote_interfaces
+cat >/dev/null
