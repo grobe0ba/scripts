@@ -62,12 +62,6 @@ destroy_remote_interfaces()
     fi
 }
 
-if [ "$1" == "" ];
-then
-    echo "Invalid options." >&2
-    exit 255
-fi
-
 destroy_local_interfaces
 destroy_remote_interfaces
 start_ssh
