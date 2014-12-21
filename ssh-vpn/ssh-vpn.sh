@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 
 #Configuration Items
@@ -24,7 +24,7 @@ start_ssh()
 
 setup_local_interfaces()
 {
-    if [ "$SYS" == "FreeBSD" ];
+    if [[ "$SYS" == "FreeBSD" ]];
     then
 	ifconfig tun$TUNDEV up
 	ifconfig tun$TUNDEV $LOCALIP/$CIDR $REMOTEIP
@@ -36,7 +36,7 @@ setup_local_interfaces()
 
 setup_remote_interfaces()
 {
-    if [ "$RSYS" == "FreeBSD" ];
+    if [[ "$RSYS" == "FreeBSD" ]];
     then
 	ssh root@$REMOTEHOST ifconfig tun$TUNDEV up
 	ssh root@$REMOTEHOST ifconfig tun$TUNDEV $REMOTEIP/$CIDR $LOCALIP
@@ -48,7 +48,7 @@ setup_remote_interfaces()
 
 destroy_local_interfaces()
 {
-    if [ "$SYS" == "FreeBSD" ];
+    if [[ "$SYS" == "FreeBSD" ]];
     then
 	ifconfig tun$TUNDEV destroy
     fi
@@ -56,7 +56,7 @@ destroy_local_interfaces()
 
 destroy_remote_interfaces()
 {
-    if [ "$RSYS" == "FreeBSD" ];
+    if [[ "$RSYS" == "FreeBSD" ]];
     then
 	ssh root@$REMOTEHOST ifconfig tun$TUNDEV destroy
     fi
