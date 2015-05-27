@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/meta/g/grobe0ba/pkg/bin/perl -w
 
 use strict;
 use File::Find ();
@@ -17,9 +17,13 @@ sub wanted;
 
 my $cgi = CGI->new;
 print $cgi->header;
-print <<EOF
-paste(base.html)
+
+my $htmlbase = <<"EOF";
+include(base.html)
 EOF
+
+print "$htmlbase";
+
 if($cgi->param("dir"))
 {
 	my $dir = $cgi->param("dir");
@@ -40,9 +44,10 @@ sub doprint
 	} else {
 		$name =~ s/\/meta\/g\/grobe0ba\/html\///;
 		my $base = File::Basename::basename($name);
-print <<EOF
-paste(element.html)
-EOF		
+		my $htmlsection = << "EOF";
+include(element.html)
+EOF
+print "$htmlsection";
 	}
 }
 
