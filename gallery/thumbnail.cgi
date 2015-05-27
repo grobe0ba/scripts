@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/meta/g/grobe0ba/pkg/bin/perl -w
 
 use strict;
 use warnings;
