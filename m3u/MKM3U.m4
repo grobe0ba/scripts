@@ -7,7 +7,7 @@ fi
 HELPER=$(mktemp /tmp/MKM3U.XXXXX)
 
 openssl base64 -d >$HELPER << EOF
-paste(MK3HELP.b64)
+include(MK3HELP.b64)
 EOF
 
 PLNAME=$(echo $1 | sed -e "s#$MOVIEDIR/##" | sed -e "s#/#_#g")

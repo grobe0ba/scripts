@@ -7,13 +7,13 @@ find . -name "*m3u" -exec rm "{}" \;
 MKM3U=$(mktemp /tmp/MKINDEX.XXXXX)
 
 openssl base64 -d >$MKM3U<<EOF
-paste(MKM3U.b64)
+include(MKM3U.b64)
 EOF
 
 TOINDEX=$(mktemp /tmp/MKINDEX.XXXXX)
 
 openssl base64 -d >$TOINDEX<<EOF
-paste(TOINDEX.b64)
+include(TOINDEX.b64)
 EOF
 
 /usr/local/bin/bash $MKM3U $MOVIEDIR
