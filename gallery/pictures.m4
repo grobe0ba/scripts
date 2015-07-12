@@ -56,6 +56,6 @@ sub wanted {
     my ($dev,$ino,$mode,$nlink,$uid,$gid);
 
     (($dev,$ino,$mode,$nlink,$uid,$gid) = lstat($_)) &&
-    /^.*jpg\z/si
+    /^.*(jpg|png)\z/si
     && doprint($name);
 }
