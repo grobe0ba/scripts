@@ -1,0 +1,3 @@
+#!/bin/mksh
+
+for x in $(find /run/media/grobe0ba/disk/DCIM/100NIKON -print0 | xargs --null) ; do UUID="$(uuidgen -t)"; echo "${x} -> ${UUID}.jpg"; cp "${x}" "${UUID}.jpg"; unset UUID; done
