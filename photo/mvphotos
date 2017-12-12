@@ -1,0 +1,13 @@
+#!/bin/mksh
+
+NS="$(uuidgen -t)"
+I=0
+
+for x in $(find . -type f -print0 | xargs --null);
+do
+    UUID="$(uuidgen --sha1 --name ${I} --namespace ${NS})";
+    I=$((I+1));
+    echo "${x} -> ${UUID}.jpg";
+    mv "${x}" "${UUID}.jpg";
+    unset UUID;
+done

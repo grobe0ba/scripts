@@ -1,7 +1,10 @@
 #!/bin/mksh
 
-SUMS="$(mktemp dedup.XXXXX)"
+SUMS="$(mktemp depdup.XXXXX)"
 
-for x in $(cut -d'=' -f2 "${SUMS}" | sed -e 's/^ //' | sort | uniq -d | xargs); do grep "${x}" "${SUMS}" | head -n1 | cut -d'(' -f2 | cut -d')' -f1 | xargs rm; done
+for x in $(cut -d'=' -f2 "${SUMS}" | sed -e 's/^ //' | sort | uniq -d | xargs);
+do
+    grep "${x}" "${SUMS}" | head -n1 | cut -d'(' -f2 | cut -d')' -f1 | xargs rm;
+done
 
 rm "${SUMS}"
