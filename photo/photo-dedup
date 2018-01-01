@@ -1,10 +1,15 @@
 #!/bin/mksh
 
-SUMS="$(mktemp depdup.XXXXX)"
+SUMS="$(mktemp dedup.XXXXX)"
+
+find . -type f -print0 | xargs -0 -n1 openssl sha256 >> "${SUMS}"
 
 for x in $(cut -d'=' -f2 "${SUMS}" | sed -e 's/^ //' | sort | uniq -d | xargs);
 do
-    grep "${x}" "${SUMS}" | head -n1 | cut -d'(' -f2 | cut -d')' -f1 | xargs rm;
+    FILE=$(grep "${x}" "${SUMS}" | head -n1 | cut -d'(' -f2 | cut -d')' -f1 | xargs);
+    echo "${FILE}";
+    rm "${FILE}";
+    unset FILE;
 done
 
 rm "${SUMS}"

@@ -5,9 +5,7 @@ I=0
 
 for x in $(find /run/media/grobe0ba/disk/DCIM/100NIKON -type f -print0 | xargs --null);
 do
-    UUID="$(uuidgen --sha1 --name ${I} --namespace ${NS})";
     I=$((I+1));
-    echo "${x} -> ${UUID} - ${I}.jpg";
-    cp "${x}" "${UUID} - ${I}.jpg";
-    unset UUID;
+    echo "${x} -> ${NS} - ${I}.jpg";
+    cp "${x}" "${NS} - ${I}.jpg";
 done
