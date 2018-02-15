@@ -1,0 +1,33 @@
+#!/bin/bash
+
+if [ -z "${1}" ];
+then
+    printf "You must specify a playlist number...\n"
+    exit 255
+fi
+
+export PL="${HOME}/Music/Playlist${1}"
+export OUT="${HOME}/Media/Playlist${1}"
+export ISO="${OUT}.iso"
+export MF="${OUT}/Makefile"
+
+TMP="$(mktemp /tmp/genplaylist.XXXXX)"
+
+mkdir "${OUT}" > /dev/null 2>&1
+rm -f "${MF}" "${OUT}/TARGETS"
+
+xargs -a "${PL}" -I '{}' -n 1 find "${HOME}/Music" -iname '{}' -print0 \
+    >> "${TMP}"
+
+xargs -0 -a "${TMP}" -n 1 -I '{}' "${HOME}/Music/plconv" '{}'
+
+printf ".PHONY: all\n%s: " "${ISO}">> "${MF}"
+cat "${OUT}/TARGETS" >> "${MF}"
+printf "\n\tgenisoimage -iso-level 4 -J -l -R -exclude Makefile -exclude TARGETS '%s' > '%s'\n" "${OUT}" "${ISO}" >> "${MF}"
+
+printf "all: %s" "${ISO}" >> "${MF}"
+
+cd "${OUT}"
+make -j4 all
+
+rm "${TMP}" "${OUT}/TARGETS"

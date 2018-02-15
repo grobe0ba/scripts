@@ -1,0 +1,14 @@
+#!/bin/bash
+
+SUFFIX="$(echo "${1}" | sed -E -e 's/(.*)(\.[[:alnum:]]{3})/\2/')"
+
+INFILE="$(echo "${1}" | sed -e 's/ /\\ /g')"
+PREBASE0="$(echo "${OUT}/$(basename "${1}" "${SUFFIX}").mp3")" # | \
+PREBASE1="$(echo "${PREBASE0}" | openssl sha512 | cut -d' ' -f2)"
+OUTBASE="${PREBASE1:0:8}.mp3"
+OUTFILE="${OUT}/${OUTBASE}"
+
+printf "%s: %s\n" "${OUTBASE}" "${INFILE}" >> "${MF}"
+printf '\tffmpeg -i "$<" -map_metadata 0:s:0 -map_metadata 0 "$@"\n' >> "${MF}"
+
+printf "%s " "$(echo "${OUTBASE}" | sed -e 's/ /\ /g')" >> "${OUT}/TARGETS"
