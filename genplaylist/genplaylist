@@ -16,18 +16,22 @@ TMP="$(mktemp /tmp/genplaylist.XXXXX)"
 mkdir "${OUT}" > /dev/null 2>&1
 rm -f "${MF}" "${OUT}/TARGETS"
 
+printf ".PHONY: all clean\n" >> "${MF}"
+printf "all: %s\n" "${ISO}" >> "${MF}"
+
 xargs -a "${PL}" -I '{}' -n 1 find "${HOME}/Music" -iname '{}' -print0 \
     >> "${TMP}"
 
 xargs -0 -a "${TMP}" -n 1 -I '{}' "${HOME}/Music/plconv" '{}'
 
-printf ".PHONY: all\n%s: " "${ISO}">> "${MF}"
+printf "%s: " "${ISO}">> "${MF}"
 cat "${OUT}/TARGETS" >> "${MF}"
 printf "\n\tgenisoimage -iso-level 4 -J -l -R -exclude Makefile -exclude TARGETS '%s' > '%s'\n" "${OUT}" "${ISO}" >> "${MF}"
 
-printf "all: %s" "${ISO}" >> "${MF}"
+printf "clean:\n\trm -f *.mp3 %s\n" "${ISO}" >> "${MF}"
+printf "copy:\n\tscp %s calliope:/tmp\n" "${ISO}" >> "${MF}"
 
 cd "${OUT}"
-make -j4 all
+make -j4
 
 rm "${TMP}" "${OUT}/TARGETS"
