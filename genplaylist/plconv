@@ -9,7 +9,7 @@ OUTBASE="${PREBASE1:0:8}.mp3"
 OUTFILE="${OUT}/${OUTBASE}"
 
 printf "%s: %s\n" "${OUTBASE}" "${INFILE}" >> "${MF}"
-printf '\tffmpeg -i "$<" -map_metadata 0:s:0 -map_metadata 0 -vn "$@"\n' \
+printf '\tffmpeg -i "$<" -map_metadata 0:s:0 -map_metadata 0 -vn -ar 48k -b:a 128k "$@"\n' \
     >> "${MF}"
 
 printf "%s " "$(echo "${OUTBASE}" | sed -e 's/ /\ /g')" >> "${OUT}/TARGETS"
